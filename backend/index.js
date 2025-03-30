@@ -2,6 +2,7 @@ const express = require("express");
 const { z } = require("zod");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+require("dotenv").config({ path: "./.env" });
 const { User, Prompts } = require("./model/mongo");
 const { GoogleGenAI } = require("@google/genai");
 const PORT = process.env.PORT || 8080;
@@ -9,10 +10,11 @@ const app = express();
 const cors = require("cors");
 app.use(express.json()); // ✅ Parse JSON body
 app.use(cors());
-
+require("dotenv").config({ path: "./.env" });
 const ai = new GoogleGenAI({
-  apiKey: "AIzaSyAa3679uLTaOE_EYF77aK6VAUDXxCBrMsc",
+  apiKey: process.env.GEMINI_API,
 });
+console.log("the api key is ", process.env.GEMINI_API);
 // ✅ Zod Validation Schemas
 const SignUpInputs = z.object({
   name: z.string().min(3, "Name must be at least 3 characters"),
